@@ -5,12 +5,20 @@ import Skeleton from "../components/PizzaBlock/Skeleton.jsx";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock.jsx";
 import Pagination from "../components/Pagination/index.jsx";
 import {AppContext} from "../App.jsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
+import qs from "qs";
+import {useNavigate} from "react-router";
+import {setFilters} from "../redux/filterSlice/slice.js";
+
+const sortArr = ["rating", "price", "title"]
 
 function Home() {
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
+
+    const isParams = React.useRef(false);
+    const isMounted = React.useRef(false);
 
     const categoryId = useSelector(state => state.filter.categoryId);
     const sortId = useSelector(state => state.filter.sortId);
@@ -18,9 +26,10 @@ function Home() {
 
     const {searchValue} = React.useContext(AppContext);
 
-    React.useEffect(() => {
-        const sortArr = ["rating", "price", "title"]
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
+    const getPizzas = () => {
         setIsLoading(true)
 
         axios.get(`https://6937f1194618a71d77ce4027.mockapi.io/items?` +
@@ -31,9 +40,41 @@ function Home() {
                 setItems(response.data)
                 setIsLoading(false);
             })
+    }
 
+    React.useEffect(() => {
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1));
+
+            dispatch(setFilters({...params}));
+
+            isParams.current = true
+        }
+    }, [])
+
+    React.useEffect(() => {
         window.scroll(0, 0);
+
+        if (!isParams.current) {
+            getPizzas()
+        }
+
+        isParams.current = false
     }, [sortId, categoryId, searchValue, pageNumber]);
+
+    React.useEffect(() => {
+        if (isMounted.current) {
+            const queryString = qs.stringify({
+                sortId,
+                categoryId,
+                pageNumber,
+            })
+
+            navigate(`?${queryString}`);
+        }
+
+        isMounted.current = true;
+    }, [sortId, categoryId, pageNumber])
 
     return (
         <div className="container">

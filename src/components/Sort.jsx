@@ -8,14 +8,29 @@ function Sort() {
     const [isVisible, setIsVisible] = React.useState(false)
     const activeSortIndex = useSelector(state => state.filter.sortId)
     const dispatch = useDispatch();
+    const sortRef = React.useRef();
 
     const onClickSort = (sortName, index) => {
         setIsVisible(false)
         dispatch(setSortId(index))
     }
 
+    React.useEffect(() => {
+        const handleClick = (event) => {
+            if (!event.composedPath().includes(sortRef.current)) {
+                setIsVisible(false)
+            }
+        }
+
+        document.body.addEventListener('click', handleClick)
+
+        return () => {
+            document.body.removeEventListener("click", handleClick);
+        };
+    }, [])
+
     return (
-        <div className="sort">
+        <div ref={sortRef} className="sort">
             <div className="sort__label">
                 <svg
                     width="10"

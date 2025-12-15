@@ -18,10 +18,15 @@ export const filterSlice = createSlice({
         },
         setPageNumber: (state, action) => {
             state.pageNumber = action.payload
+        },
+        setFilters: (state, action) => {
+            state.categoryId = Number(action.payload.categoryId)
+            state.sortId = Number(action.payload.sortId)
+            state.pageNumber = Number(action.payload.pageNumber)
         }
     },
 })
 
-export const {setCategoryId, setSortId, setPageNumber} = filterSlice.actions
+export const {setCategoryId, setSortId, setPageNumber, setFilters} = filterSlice.actions
 
 export default filterSlice.reducer

@@ -1,23 +1,24 @@
 import React from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {selectFilter, setSortId} from "../redux/filterSlice/slice.js";
+import {SortProperty} from "../redux/filterSlice/types";
 
-const sortNames = ["популярности", "цене", "алфавиту"]
+const sortNames: string[] = [SortProperty.RATING, SortProperty.PRICE, SortProperty.TITLE]
 
 function Sort() {
     const [isVisible, setIsVisible] = React.useState(false)
     const {sortId: activeSortIndex} = useSelector(selectFilter);
     const dispatch = useDispatch();
-    const sortRef = React.useRef();
+    const sortRef = React.useRef<HTMLDivElement>(null);
 
-    const onClickSort = (sortName, index) => {
+    const onClickSort = (sortName: string, index: number) => {
         setIsVisible(false)
         dispatch(setSortId(index))
     }
 
     React.useEffect(() => {
-        const handleClick = (event) => {
-            if (!event.composedPath().includes(sortRef.current)) {
+        const handleClick = (event: MouseEvent) => {
+            if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
                 setIsVisible(false)
             }
         }

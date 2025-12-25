@@ -4,19 +4,29 @@ import {addItem, removeItem, removeOneItem} from "../redux/cartSlice/slice.js";
 
 const typeNames = ["тонкое", "традиционное"];
 
-function CartItem({id, title, imageUrl, type, size, price, count}) {
+type CartItemProps = {
+    id: string;
+    title: string;
+    imageUrl: string;
+    type: number;
+    size: number;
+    price: number;
+    count: number;
+}
+
+function CartItem(item: CartItemProps) {
     const dispatch = useDispatch();
 
     const onClickAdd = () => {
-        dispatch(addItem({id, type, size, price}))
+        dispatch(addItem(item))
     }
 
     const onClickRemoveOne = () => {
-        dispatch(removeOneItem({id, type, size, price}))
+        dispatch(removeOneItem(item))
     }
 
     const onClickRemove = () => {
-        dispatch(removeItem({id, type, size, price, count}))
+        dispatch(removeItem(item))
     }
 
     return (
@@ -24,13 +34,13 @@ function CartItem({id, title, imageUrl, type, size, price, count}) {
             <div className="cart__item-img">
                 <img
                     className="pizza-block__image"
-                    src={imageUrl}
+                    src={item.imageUrl}
                     alt="Pizza"
                 />
             </div>
             <div className="cart__item-info">
-                <h3>{title}</h3>
-                <p>{typeNames[type]}, {size} см.</p>
+                <h3>{item.title}</h3>
+                <p>{typeNames[item.type]}, {item.size} см.</p>
             </div>
             <div className="cart__item-count">
                 <div onClick={onClickRemoveOne} className="button button--outline button--circle cart__item-count-minus">
@@ -45,7 +55,7 @@ function CartItem({id, title, imageUrl, type, size, price, count}) {
                     </svg>
 
                 </div>
-                <b>{count}</b>
+                <b>{item.count}</b>
                 <div onClick={onClickAdd} className="button button--outline button--circle cart__item-count-plus">
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
@@ -60,7 +70,7 @@ function CartItem({id, title, imageUrl, type, size, price, count}) {
                 </div>
             </div>
             <div className="cart__item-price">
-                <b>{price*count} ₽</b>
+                <b>{item.price*item.count} ₽</b>
             </div>
             <div className="cart__item-remove">
                 <div onClick={onClickRemove} className="button button--outline button--circle">

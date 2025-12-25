@@ -1,12 +1,11 @@
 import './scss/app.scss'
-import Header from "./components/Header.jsx";
+import Header from "./components/Header.js";
 
-import React from "react";
-import Home from "./pages/Home.jsx";
+import Home from "./pages/Home.js";
 import {Route, Routes} from "react-router";
-import NotFound from "./pages/NotFound.jsx";
-import Cart from "./pages/Cart.jsx";
-import FullPizza from "./pages/FullPizza.jsx";
+import NotFound from "./pages/NotFound.js";
+import Cart from "./pages/Cart.js";
+import FullPizza from "./pages/FullPizza.js";
 
 function App() {
     return (

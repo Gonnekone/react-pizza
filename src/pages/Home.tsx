@@ -1,14 +1,16 @@
 import React from 'react';
-import Categories from "../components/Categories.jsx";
-import Sort from "../components/Sort.jsx";
-import Skeleton from "../components/PizzaBlock/Skeleton.jsx";
-import PizzaBlock from "../components/PizzaBlock/PizzaBlock.jsx";
-import Pagination from "../components/Pagination/index.jsx";
-import {useDispatch, useSelector} from "react-redux";
+import Categories from "../components/Categories";
+import Sort from "../components/Sort";
+import Skeleton from "../components/PizzaBlock/Skeleton.js";
+import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
+import Pagination from "../components/Pagination/index";
+import {useSelector} from "react-redux";
 import qs from "qs";
-import {Link, useNavigate} from "react-router";
+import {useNavigate} from "react-router";
 import {selectFilter, setFilters} from "../redux/filterSlice/slice.js";
 import {fetchItems, selectItems} from "../redux/itemSlice/slice.js";
+import {useAppDispatch} from "../redux/store";
+import {FilterSliceState} from "../redux/filterSlice/types";
 
 const sortArr = ["rating", "price", "title"]
 
@@ -20,7 +22,7 @@ function Home() {
     const {items, status} = useSelector(selectItems);
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const getPizzas = async () => {
         dispatch(fetchItems({
@@ -33,7 +35,7 @@ function Home() {
 
     React.useEffect(() => {
         if (window.location.search) {
-            const params = qs.parse(window.location.search.substring(1));
+            const params = qs.parse(window.location.search.substring(1)) as unknown as FilterSliceState;
 
             dispatch(setFilters({...params}));
 
@@ -77,7 +79,7 @@ function Home() {
                     ? (
                         <div className={"content__error-info"}>
                             <h2>Произошла ошибка
-                                <icon>😕</icon>
+                                <span>😕</span>
                             </h2>
                             <p>Не удалось получить питсы.</p>
                         </div>

@@ -11,8 +11,11 @@ const categories = [
     "Закрытые",
 ]
 
-function Categories() {
-    const {categoryId: activeIndex} = useSelector(selectFilter);
+type CategoriesProps = {
+    categoryId: number;
+}
+
+const Categories = React.memo(function Categories({categoryId}: CategoriesProps) {
     const dispatch = useDispatch();
 
     return (
@@ -22,7 +25,7 @@ function Categories() {
                     categories.map((category, currentIndex) => (
                         <li
                             onClick={() => dispatch(setCategoryId(currentIndex))}
-                            className={activeIndex === currentIndex ? "active" : ""}
+                            className={categoryId === currentIndex ? "active" : ""}
                             key={category}
                         >
                             {category}
@@ -32,6 +35,6 @@ function Categories() {
             </ul>
         </div>
     )
-}
+})
 
 export default Categories;

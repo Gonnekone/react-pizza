@@ -9,6 +9,16 @@ function Header() {
     const {totalPrice, items} = useSelector(selectCart);
     const itemsCount = items.reduce((sum, item) => sum + item.count, 0)
     const location = useLocation();
+    const isMounted = React.useRef(false);
+
+
+    React.useEffect(() => {
+        if (isMounted.current) {
+            localStorage.setItem("cart", JSON.stringify(items))
+        }
+
+        isMounted.current = true;
+    }, [items])
 
     return (
         <div className="header">

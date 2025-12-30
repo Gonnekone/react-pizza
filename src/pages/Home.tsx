@@ -70,8 +70,8 @@ function Home() {
     return (
         <div className="container">
             <div className="content__top">
-                <Categories/>
-                <Sort/>
+                <Categories categoryId={categoryId}/>
+                <Sort sortId={sortId}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             {

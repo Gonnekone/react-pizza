@@ -5,9 +5,12 @@ import {SortProperty} from "../redux/filterSlice/types";
 
 const sortNames: string[] = [SortProperty.RATING, SortProperty.PRICE, SortProperty.TITLE]
 
-function Sort() {
+type SortProps = {
+    sortId: number,
+}
+
+const Sort = React.memo(function Sort({sortId}: SortProps) {
     const [isVisible, setIsVisible] = React.useState(false)
-    const {sortId: activeSortIndex} = useSelector(selectFilter);
     const dispatch = useDispatch();
     const sortRef = React.useRef<HTMLDivElement>(null);
 
@@ -46,7 +49,7 @@ function Sort() {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setIsVisible(!isVisible)}>{sortNames[activeSortIndex]}</span>
+                <span onClick={() => setIsVisible(!isVisible)}>{sortNames[sortId]}</span>
             </div>
             {
                 isVisible && (
@@ -57,7 +60,7 @@ function Sort() {
                                     <li
                                         onClick={() => onClickSort(sortName, currentIndex)}
                                         key={sortName}
-                                        className={activeSortIndex === currentIndex ? "active" : ""}
+                                        className={sortId === currentIndex ? "active" : ""}
                                     >
                                         {sortName}
                                     </li>
@@ -69,6 +72,6 @@ function Sort() {
             }
         </div>
     )
-}
+})
 
 export default Sort;

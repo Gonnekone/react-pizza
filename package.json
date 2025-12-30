@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.11.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.0.3",
+    "ahooks": "^3.9.6",
     "axios": "^1.13.2",
     "lodash.debounce": "^4.0.8",
     "qs": "^6.14.0",

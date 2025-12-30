@@ -7,9 +7,11 @@ export const selectCartItemById = (id: string, type: number, size: number) => (s
     state.cart.items.find(item => item.id === id
         && item.type === type && item.size === size)
 
+const items = getCartFromLocalStorage()
+
 const initialState: CartSliceState = {
-    totalPrice: 0,
-    items: [],
+    totalPrice: calcTotalPrice(items),
+    items: items,
 }
 
 export const cartSlice = createSlice({
@@ -61,6 +63,17 @@ export const cartSlice = createSlice({
         }
     },
 })
+
+export function getCartFromLocalStorage(): CartItem[] {
+    const data = localStorage.getItem("cart");
+    const items = data ? JSON.parse(data) : [];
+
+    return items as CartItem[]
+}
+
+export function calcTotalPrice(items: CartItem[]) {
+    return items.reduce((sum, obj) => obj.price * obj.count + sum, 0);
+};
 
 export const {addItem, removeItem, clearItems, removeOneItem} = cartSlice.actions
 
